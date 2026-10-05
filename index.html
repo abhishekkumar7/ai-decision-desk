@@ -1,0 +1,1086 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>AI Decision Desk</title>
+<meta name="description" content="Business simulations where managers and students lead committees of AI agents on real decisions, under limits a person owns. Created by Abhishek Kumar Jha and Ashish Desai.">
+<meta name="theme-color" content="#faf8f4">
+<script>document.documentElement.className="js"</script>
+<meta property="og:type" content="website">
+<meta property="og:title" content="AI Decision Desk · Lead a team of AI agents">
+<meta property="og:description" content="Business simulations where managers and students lead committees of AI agents under limits a person owns. By Abhishek Kumar Jha and Ashish Desai.">
+<meta property="og:image" content="media/hero-poster.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23060912'/%3E%3Ccircle cx='16' cy='8' r='4' fill='%235eead4'/%3E%3Ccircle cx='7' cy='23' r='4' fill='%23a78bfa'/%3E%3Ccircle cx='25' cy='23' r='4' fill='%23fbbf24'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#faf8f4; --bg-2:#f2eee6; --panel:#ffffff; --panel-2:#f7f4ee; --line:#e3ddd2; --line-2:#cfc7b8;
+  --fg:#1a1d24; --muted:#4f5563; --dim:#767b86;
+  --accent:#9b1c31; --accent-d:#7a1526; --accent-soft:#f6e9eb;
+  --navy:#1d3557; --navy-soft:#e8edf4; --gold:#94681f; --gold-soft:#f7efe0; --green:#2e6b4e; --green-soft:#e6f1eb; --bad:#b42318; --bad-soft:#fbeae8; --blue:#2b5f9e;
+  --serif:"Source Serif 4",Georgia,"Times New Roman",serif; --sans:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  --r:6px; --wrap:76rem;
+  --shadow:0 1px 2px rgba(26,29,36,.04),0 8px 24px rgba(26,29,36,.06);
+  --shadow-h:0 2px 4px rgba(26,29,36,.05),0 16px 40px rgba(26,29,36,.10);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:6rem}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 1.0625rem/1.65 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img,video{max-width:100%;display:block}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
+h1,h2,h3{font-family:var(--serif);margin:0;line-height:1.12;letter-spacing:-.012em;text-wrap:balance;font-weight:600;color:var(--fg)}
+h1{font-size:clamp(2.4rem,4.8vw,3.9rem)}
+h2{font-size:clamp(1.9rem,3.6vw,2.8rem)}
+h3{font-size:1.28rem}
+p{margin:0}
+em.s{font-style:italic;color:var(--accent);font-weight:inherit}
+.wrap{max-width:var(--wrap);margin-inline:auto;padding-inline:1.25rem}
+.kicker{font:600 .76rem/1.3 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--accent);display:inline-flex;gap:.7rem;align-items:center}
+.kicker::before{content:"";width:1.6rem;height:2px;background:currentColor}
+.lede{font-size:clamp(1.08rem,1.5vw,1.22rem);color:var(--muted);max-width:42rem}
+.muted{color:var(--muted)}
+.mono{font-family:var(--mono)}
+section{position:relative}
+.sec{padding-block:clamp(4rem,8vw,7rem)}
+.sec-head{display:flex;flex-direction:column;gap:1rem;margin-bottom:clamp(2rem,4vw,3rem);max-width:50rem}
+.alt{background:var(--bg-2);border-block:1px solid var(--line)}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:.55rem;font:600 .98rem var(--sans);padding:.8rem 1.3rem;border-radius:4px;text-decoration:none;border:1px solid transparent;cursor:pointer;transition:background .2s,color .2s,border-color .2s,box-shadow .2s;white-space:nowrap}
+.btn.primary{background:var(--accent);color:#fff}
+.btn.primary:hover{background:var(--accent-d);box-shadow:0 6px 18px rgba(155,28,49,.22)}
+.btn.ghost{border-color:var(--navy);color:var(--navy);background:transparent}
+.btn.ghost:hover{background:var(--navy);color:#fff}
+.btn svg{width:1.05rem;height:1.05rem}
+.btn:disabled{opacity:.6;cursor:default}
+
+/* utility bar + nav */
+.util{background:var(--navy);color:#dbe3ee;font-size:.8rem}
+.util .wrap{display:flex;justify-content:space-between;gap:1rem;height:2.1rem;align-items:center}
+.util a{color:#fff;text-decoration:none;font-weight:500}
+.util a:hover{text-decoration:underline}
+@media (max-width:640px){.util .hide-sm{display:none}}
+.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);transition:box-shadow .3s}
+.nav.scrolled{box-shadow:0 4px 18px rgba(26,29,36,.07)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem;height:4.4rem}
+.brand{display:flex;align-items:center;gap:.75rem;text-decoration:none}
+.mark{width:2.3rem;height:2.3rem;border-radius:4px;background:var(--accent);position:relative;flex:none}
+.mark i{position:absolute;width:.42rem;height:.42rem;border-radius:50%;background:#fff}
+.mark i:nth-child(1){left:.94rem;top:.42rem}.mark i:nth-child(2){left:.48rem;top:1.38rem}.mark i:nth-child(3){right:.48rem;top:1.38rem}
+.mark::before{content:"";position:absolute;inset:.62rem .68rem .62rem .68rem;border:1.5px solid rgba(255,255,255,.55);border-radius:50%}
+.brand b{font:600 1.12rem/1.1 var(--serif);color:var(--fg)}
+.brand small{display:block;font:600 .66rem var(--sans);color:var(--dim);letter-spacing:.12em;text-transform:uppercase;margin-top:.15rem}
+.links{display:flex;gap:1.5rem;align-items:center}
+.links a{text-decoration:none;color:var(--muted);font-size:.93rem;font-weight:500;transition:color .2s}
+.links a:not(.btn):hover{color:var(--accent)}
+.links .btn{color:#fff}
+.menu-btn{display:none;background:none;border:1px solid var(--line-2);border-radius:4px;padding:.45rem .6rem;cursor:pointer}
+@media (max-width:1120px){
+  .links{position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 20px 40px rgba(26,29,36,.12);padding:.5rem 1.25rem 1.25rem;transform:translateY(-8px);opacity:0;visibility:hidden;transition:opacity .25s,transform .25s,visibility .25s}
+  .links.open{transform:none;opacity:1;visibility:visible}
+  .menu-btn[aria-expanded=true] .ham{display:none}.menu-btn[aria-expanded=false] .x{display:none}
+  .links a{padding:.85rem 0;border-bottom:1px solid var(--line)}
+  .links .btn{margin-top:1rem;justify-content:center;border-bottom:0}
+  .menu-btn{display:block}
+}
+
+/* hero */
+.hero{background:linear-gradient(180deg,var(--bg-2),var(--bg));border-bottom:1px solid var(--line);padding-block:clamp(3rem,7vw,5.5rem)}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(0,1fr);gap:clamp(2rem,4vw,3.5rem);align-items:center}
+.hero-copy{display:flex;flex-direction:column;gap:1.5rem}
+.hero-fig{margin:0;display:flex;flex-direction:column;gap:.7rem}
+.hero-fig .frame{border-radius:var(--r);overflow:hidden;border:1px solid var(--line-2);box-shadow:var(--shadow-h);background:#fff;aspect-ratio:16/9;position:relative}
+.hero-fig video,.hero-fig img{width:100%;height:100%;object-fit:cover}
+.hero-fig .live{position:absolute;left:.8rem;top:.8rem;font:600 .68rem var(--sans);letter-spacing:.1em;text-transform:uppercase;background:#fff;color:var(--accent);border:1px solid var(--line);padding:.3rem .55rem;border-radius:3px;display:flex;gap:.4rem;align-items:center}
+.hero-fig .live::before{content:"";width:.45rem;height:.45rem;border-radius:50%;background:var(--accent);animation:pulse 1.6s infinite}
+@keyframes pulse{50%{opacity:.3}}
+.hero-fig figcaption{font-size:.86rem;color:var(--dim);font-style:italic}
+.typed{color:var(--accent);font-family:var(--serif);font-style:italic;font-weight:600;white-space:nowrap}
+.typed::after{content:"";display:inline-block;width:2px;height:.9em;background:var(--accent);margin-left:2px;vertical-align:-.1em;animation:caret 1s steps(1) infinite}
+@keyframes caret{50%{opacity:0}}
+.cta-row{display:flex;gap:.8rem;flex-wrap:wrap}
+.stats{display:grid;grid-template-columns:repeat(4,auto);gap:2.2rem;justify-content:start;padding-top:1.3rem;border-top:1px solid var(--line-2);margin-top:.4rem}
+.stat b{display:block;font:600 2.1rem/1 var(--serif);color:var(--navy)}
+.stat span{font:600 .7rem var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+@media (max-width:900px){.hero-grid{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:760px){
+  .typed-line{display:block;min-height:3.3em}
+  .stats{grid-template-columns:repeat(2,auto);gap:1.2rem 2.4rem}
+  .typed{white-space:normal}
+}
+
+/* trust strip */
+.strip{border-bottom:1px solid var(--line);background:#fff}
+.strip .wrap{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+.strip div{padding:1.3rem 1.2rem;border-left:1px solid var(--line);font-size:.92rem;color:var(--muted);line-height:1.45}
+.strip div:first-child{border-left:0;padding-left:0}
+.strip b{display:block;font:600 1rem var(--serif);color:var(--fg);margin-bottom:.15rem}
+@media (max-width:860px){.strip .wrap{grid-template-columns:repeat(2,minmax(0,1fr))}.strip div:nth-child(3){border-left:0;padding-left:0}.strip div:nth-child(n+3){border-top:1px solid var(--line)}}
+@media (max-width:480px){.strip .wrap{grid-template-columns:minmax(0,1fr)}.strip div{border-left:0;padding-left:0}.strip div+div{border-top:1px solid var(--line)}}
+
+/* reveal */
+html.js .rv{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+html.js .rv.in{opacity:1;transform:none}
+.rv.d1{transition-delay:.07s}.rv.d2{transition-delay:.14s}.rv.d3{transition-delay:.21s}
+
+/* panels */
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);position:relative;overflow:hidden;box-shadow:var(--shadow)}
+.glow{transition:box-shadow .3s,transform .3s,border-color .3s}
+.glow:hover{box-shadow:var(--shadow-h)}
+
+/* how it works */
+.how{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:2rem;align-items:center}
+.vid-frame{border-radius:var(--r);overflow:hidden;border:1px solid var(--line-2);box-shadow:var(--shadow-h);position:relative;background:#fff;aspect-ratio:16/9}
+.vid-frame video{width:100%;height:100%;object-fit:cover}
+.play-over{position:absolute;inset:0;display:grid;place-items:center;background:rgba(26,29,36,.08);border:0;cursor:pointer;transition:background .3s}
+.play-over:hover{background:rgba(26,29,36,.02)}
+.play-over span{width:4.6rem;height:4.6rem;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:#fff;box-shadow:0 10px 30px rgba(155,28,49,.35);transition:transform .25s}
+.play-over:hover span{transform:scale(1.06)}
+.play-over svg{width:1.7rem;height:1.7rem;margin-left:.2rem}
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.55rem}
+.steps button{width:100%;text-align:left;background:#fff;border:1px solid var(--line);border-left:3px solid var(--line);border-radius:4px;padding:1rem 1.1rem;cursor:pointer;display:grid;grid-template-columns:2.2rem 1fr;gap:.2rem .8rem;position:relative;overflow:hidden;transition:border-color .3s,background .3s}
+.steps button:hover{border-left-color:var(--line-2)}
+.steps .n{font:600 1.1rem var(--serif);color:var(--dim);grid-row:span 2}
+.steps b{font:600 1.08rem var(--serif)}
+.steps small{color:var(--muted);font-size:.92rem;line-height:1.45}
+.steps .bar{position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--accent)}
+.steps button.on{border-left-color:var(--accent);background:var(--accent-soft)}
+.steps button.on .n{color:var(--accent)}
+@media (max-width:900px){.how{grid-template-columns:minmax(0,1fr)}}
+
+/* console demo */
+.demo{display:grid;grid-template-columns:minmax(0,20rem) minmax(0,1fr);gap:1.4rem}
+.ctrl{padding:1.5rem;display:flex;flex-direction:column;gap:1.4rem}
+.ctrl h3{font-size:1.15rem}
+.field{display:flex;flex-direction:column;gap:.5rem}
+.field label{display:flex;justify-content:space-between;font-size:.92rem;color:var(--muted)}
+.field label output{font:600 .92rem var(--mono);color:var(--navy)}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:4px;border-radius:4px;background:linear-gradient(90deg,var(--navy) var(--p,50%),var(--line) var(--p,50%));outline-offset:6px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:#fff;border:3px solid var(--navy);cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+input[type=range]::-moz-range-thumb{width:13px;height:13px;border-radius:50%;background:#fff;border:3px solid var(--navy);cursor:pointer}
+.ctrl .hint{font-size:.84rem;color:var(--dim);line-height:1.5}
+.term{display:flex;flex-direction:column;min-height:30rem}
+.term-top{display:flex;align-items:center;gap:.5rem;padding:.75rem 1rem;border-bottom:1px solid var(--line);background:var(--panel-2);font:500 .78rem var(--mono);color:var(--dim)}
+.term-top i{width:.65rem;height:.65rem;border-radius:50%;background:var(--line-2)}
+.term-top span{margin-left:.6rem}
+.log{flex:1;padding:1rem 1.1rem;font:400 .85rem/1.7 var(--mono);color:#2b2f38;overflow:auto;max-height:24rem;background:#fff}
+.log .ln{display:flex;gap:.7rem;animation:fadeIn .3s}
+.log .tag{flex:none;font-weight:600;min-width:8.5rem}
+@media (max-width:600px){.log .ln{flex-direction:column;gap:0;margin-bottom:.4rem}.log .tag{min-width:0}}
+.log .ok{color:var(--green)}.log .bad{color:var(--bad)}.log .warn{color:var(--gold)}.log .v{color:var(--navy)}.log .sky{color:var(--blue)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}}
+.log .idle{color:var(--dim)}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line);background:var(--panel-2)}
+.kpi{padding:.9rem 1rem;border-left:1px solid var(--line)}
+.kpi:first-child{border-left:0}
+.kpi span{display:block;font:600 .66rem var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+.kpi b{font:600 1.4rem var(--serif);color:var(--navy)}
+.approve{display:none;gap:.6rem;padding:0 1.1rem 1rem;flex-wrap:wrap;background:#fff}
+.approve.show{display:flex}
+@media (max-width:900px){.demo{grid-template-columns:minmax(0,1fr)}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.kpi:nth-child(3){border-left:0}.kpi:nth-child(n+3){border-top:1px solid var(--line)}}
+
+/* catalogue */
+.filters{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.6rem}
+.chip{font:500 .88rem var(--sans);padding:.5rem 1rem;border-radius:4px;border:1px solid var(--line-2);background:#fff;color:var(--muted);cursor:pointer;transition:all .2s}
+.chip:hover{color:var(--fg);border-color:var(--navy)}
+.chip[aria-pressed=true]{background:var(--navy);color:#fff;border-color:var(--navy)}
+.grid{display:grid;gap:1.4rem;grid-template-columns:repeat(auto-fill,minmax(min(100%,21rem),1fr))}
+.case{display:flex;flex-direction:column;text-decoration:none}
+.case:hover{transform:translateY(-3px);border-color:var(--line-2)}
+.case .media{position:relative;aspect-ratio:16/9;overflow:hidden;background:var(--bg-2);border-bottom:1px solid var(--line)}
+.case .media img,.case .media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s,opacity .4s}
+.case .media video{opacity:0}
+.case:hover .media video.ready,.case:focus-visible .media video.ready{opacity:1}
+.case:hover .media img{transform:scale(1.03)}
+.case .num{position:absolute;left:.8rem;top:.8rem;z-index:2;font:600 .7rem var(--sans);letter-spacing:.12em;background:var(--navy);color:#fff;padding:.3rem .55rem;border-radius:3px}
+.case .lvl{position:absolute;right:.8rem;top:.8rem;z-index:2}
+.case .body{padding:1.15rem 1.3rem 1.3rem;display:flex;flex-direction:column;gap:.5rem;flex:1}
+.case .co{font:600 .72rem var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.case h3{font-size:1.3rem}
+.case p{color:var(--muted);font-size:.95rem;line-height:1.5}
+.case .foot{margin-top:auto;padding-top:.9rem;display:flex;gap:.5rem 1rem;flex-wrap:wrap;font:500 .8rem var(--sans);color:var(--dim);border-top:1px solid var(--line)}
+.case .foot span{display:flex;align-items:center;gap:.35rem}
+.pill{font:600 .66rem var(--sans);letter-spacing:.08em;text-transform:uppercase;padding:.3rem .55rem;border-radius:3px;background:#fff;border:1px solid}
+.pill.Beginner{color:var(--green);border-color:#b9d6c6}
+.pill.Intermediate{color:var(--gold);border-color:#e3cfa6}
+.pill.Advanced{color:var(--accent);border-color:#e3b5bd}
+.empty{color:var(--muted);padding:2rem 0}
+
+/* tracks */
+.tracks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.2rem}
+.track{padding:1.7rem;display:flex;flex-direction:column;gap:.9rem}
+.track .ico{width:3rem;height:3rem;border-radius:4px;display:grid;place-items:center;background:var(--navy-soft);color:var(--navy)}
+.track .ico svg{width:1.5rem;height:1.5rem;stroke:currentColor}
+.track.feat{border-top:3px solid var(--accent)}
+.track.feat .ico{background:var(--accent-soft);color:var(--accent)}
+.track p{color:var(--muted);font-size:.97rem}
+.track ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:.35rem;font-size:.92rem;color:var(--muted)}
+.track li::before{content:"— ";color:var(--accent)}
+.status{align-self:flex-start;font:600 .68rem var(--sans);letter-spacing:.1em;text-transform:uppercase;padding:.3rem .6rem;border-radius:3px}
+.status.live{background:var(--green-soft);color:var(--green)}
+.status.soon{background:var(--navy-soft);color:var(--navy)}
+@media (max-width:900px){.tracks{grid-template-columns:minmax(0,1fr)}}
+
+/* methods */
+.methods{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,17rem),1fr));gap:1rem}
+.method{padding:1.3rem;display:flex;flex-direction:column;gap:.6rem;min-height:13rem}
+.method .tag{font:600 .68rem var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--navy)}
+.method h3{font-size:1.12rem}
+.method p{font-size:.92rem;color:var(--muted);line-height:1.5}
+.method .trap{margin-top:auto;font-size:.88rem;color:#5c4415;border-top:1px dashed #d8c39b;padding-top:.7rem;line-height:1.45}
+.method .trap b{font:600 .66rem var(--sans);letter-spacing:.12em;display:block;margin-bottom:.15rem;color:var(--gold)}
+.principles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem;margin-bottom:3rem}
+.principle{padding:1.3rem;border-top:3px solid var(--accent)}
+.principle:nth-child(2){border-top-color:var(--navy)}.principle:nth-child(3){border-top-color:var(--gold)}.principle:nth-child(4){border-top-color:var(--green)}
+.principle b{font:600 1.1rem var(--serif);display:block;margin-bottom:.35rem}
+.principle p{font-size:.93rem;color:var(--muted)}
+@media (max-width:900px){.principles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.principles{grid-template-columns:minmax(0,1fr)}}
+
+/* agent spec showcase */
+.spec{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:1.2rem;margin-bottom:3.2rem}
+.code{font:400 .86rem/1.75 var(--mono);padding:1.4rem 1.5rem;color:#2b2f38;background:#fdfcf9}
+.code .c{color:var(--dim)}.code .k{color:var(--navy);font-weight:600}.code .s2{color:var(--green);font-weight:600}.code .w{color:var(--bad)}.code .a{color:var(--gold)}
+.code .row{display:grid;grid-template-columns:7.5rem 1fr;gap:.8rem}
+.prec{padding:1.4rem 1.5rem;display:flex;flex-direction:column;gap:1rem}
+.prec h3{font-size:1.12rem}
+.pair{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:.7rem}
+.pair div{padding:.85rem 1rem;border-radius:4px;font-size:.92rem;line-height:1.5}
+.pair .f{background:var(--bad-soft);border:1px solid #f0c4bf;color:#5f1d17}
+.pair .ps{background:var(--green-soft);border:1px solid #bcd9c8;color:#1d4532}
+.pair b{display:block;font:600 .64rem var(--sans);letter-spacing:.12em;margin-bottom:.3rem}
+.pair .f b{color:var(--bad)}.pair .ps b{color:var(--green)}
+.fails{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:3rem}
+.fails span{font:500 .85rem var(--sans);padding:.45rem .85rem;border-radius:3px;border:1px solid var(--line-2);color:var(--fg);background:#fff}
+@media (max-width:900px){.spec{grid-template-columns:minmax(0,1fr)}.pair{grid-template-columns:minmax(0,1fr)}.code .row{grid-template-columns:minmax(0,1fr);gap:0;margin-bottom:.4rem}}
+
+/* audiences */
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--line-2);max-width:100%;overflow-x:auto;scrollbar-width:none;margin-bottom:1.5rem}
+.tabs button{border:0;border-bottom:3px solid transparent;background:transparent;padding:.75rem clamp(.8rem,3vw,1.4rem);cursor:pointer;color:var(--muted);font-weight:600;white-space:nowrap;margin-bottom:-1px;transition:color .2s,border-color .2s}
+.tabs button:hover{color:var(--fg)}
+.tabs button[aria-selected=true]{color:var(--accent);border-bottom-color:var(--accent)}
+.aud{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:2rem;padding:clamp(1.5rem,3vw,2.5rem);align-items:start}
+.aud h3{font-size:clamp(1.5rem,2.4vw,1.95rem);margin-bottom:.8rem}
+.aud ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:.75rem}
+.aud li{display:grid;grid-template-columns:1.6rem 1fr;gap:.6rem;color:var(--muted)}
+.aud li::before{content:"✓";color:var(--accent);font-weight:700}
+.aud li b{color:var(--fg);font-weight:600}
+@media (max-width:860px){.aud{grid-template-columns:minmax(0,1fr)}}
+
+/* licensing */
+.lic{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.2rem}
+.tier{padding:1.7rem;display:flex;flex-direction:column;gap:1rem}
+.tier .who{font:600 .72rem var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.tier .price{font:600 1.7rem var(--serif)}
+.tier .price small{display:block;font:500 .84rem var(--sans);color:var(--dim);margin-top:.2rem}
+.tier ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:.5rem;font-size:.94rem;color:var(--muted)}
+.tier li{display:grid;grid-template-columns:1.2rem 1fr;gap:.4rem}
+.tier li::before{content:"✓";color:var(--accent)}
+.tier .btn{margin-top:auto;justify-content:center}
+.tier.feat{border-top:3px solid var(--accent)}
+.built{margin-top:1.4rem;display:flex;gap:.8rem 1.6rem;flex-wrap:wrap;align-items:center;color:var(--muted);font-size:.93rem}
+.built b{color:var(--fg)}
+@media (max-width:900px){.lic{grid-template-columns:minmax(0,1fr)}}
+
+/* team */
+.team{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.2rem}
+.person{padding:1.8rem;display:flex;flex-direction:column;gap:1rem}
+.pid{display:flex;gap:1rem;align-items:center}
+.avatar{width:3.6rem;height:3.6rem;border-radius:50%;display:grid;place-items:center;font:600 1.2rem var(--serif);background:var(--navy);color:#fff;flex:none}
+.person .role{color:var(--muted);font-size:.93rem}
+.person dl{margin:0;display:grid;grid-template-columns:6.5rem minmax(0,1fr);gap:.65rem 1rem;font-size:.94rem}
+.person dt{font:600 .68rem var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--dim);padding-top:.25rem}
+.person dd{margin:0;color:var(--fg)}
+.person a{color:var(--accent);font-size:.93rem;font-weight:600;text-decoration:none}
+.person a:hover{text-decoration:underline}
+@media (max-width:860px){.team{grid-template-columns:minmax(0,1fr)}.person dl{grid-template-columns:minmax(0,1fr);gap:.2rem}.person dd{margin-bottom:.6rem}}
+
+/* faq */
+.faq{display:flex;flex-direction:column;max-width:52rem;border-top:1px solid var(--line-2)}
+details{border-bottom:1px solid var(--line-2)}
+summary{cursor:pointer;list-style:none;padding:1.15rem 0;font:600 1.1rem var(--serif);display:flex;justify-content:space-between;gap:1rem;align-items:center}
+summary:hover{color:var(--accent)}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font:400 1.6rem/1 var(--sans);color:var(--accent);transition:transform .3s}
+details[open] summary::after{transform:rotate(45deg)}
+details p{padding:0 0 1.2rem;color:var(--muted);max-width:46rem}
+
+/* cta */
+.cta{padding:clamp(2rem,5vw,3.5rem);display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:2rem;align-items:center;background:var(--navy);border-color:var(--navy);color:#fff}
+.cta h2,.cta .kicker{color:#fff}
+.cta em.s{color:#f3c6cd}
+.cta .lede{color:#cfd8e5}
+.cta .btn.primary{background:#fff;color:var(--navy)}
+.cta .btn.primary:hover{background:#f2eee6}
+.cta .btn.ghost{border-color:rgba(255,255,255,.6);color:#fff}
+.cta .btn.ghost:hover{background:rgba(255,255,255,.12)}
+.mailbox{display:flex;flex-direction:column;gap:.8rem}
+.mailbox .addr{font:500 clamp(1rem,1.8vw,1.15rem) var(--mono);overflow-wrap:anywhere;padding:.9rem 1rem;border:1px dashed rgba(255,255,255,.4);border-radius:4px;background:rgba(255,255,255,.06);user-select:all}
+.mailbox .note{font-size:.86rem;color:#f3c6cd;min-height:1.2em}
+@media (max-width:860px){.cta{grid-template-columns:minmax(0,1fr)}}
+footer{border-top:1px solid var(--line);padding-block:2rem 3rem;color:var(--dim);font-size:.88rem;background:var(--bg-2)}
+footer .wrap{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+
+/* detail view */
+#detail{padding-top:2.5rem;padding-bottom:5rem}
+.crumbs{font:500 .86rem var(--sans);color:var(--dim);margin-bottom:1.6rem}
+.crumbs a{color:var(--accent);text-decoration:none;font-weight:600}
+.crumbs a:hover{text-decoration:underline}
+.d-head{display:flex;flex-direction:column;gap:1rem;margin-bottom:2.2rem;max-width:56rem}
+.d-chips{display:flex;gap:.5rem;flex-wrap:wrap}
+.d-chips span{font:500 .82rem var(--sans);padding:.35rem .75rem;border:1px solid var(--line-2);border-radius:3px;color:var(--muted);background:#fff}
+.d-grid{display:grid;grid-template-columns:minmax(0,1fr) 22rem;gap:2.4rem;align-items:start}
+.d-main{display:flex;flex-direction:column;gap:2.6rem;min-width:0}
+.d-main h2{font-size:1.7rem;margin-bottom:.9rem}
+.d-main .prose p{color:var(--fg);margin-bottom:.9rem;max-width:44rem}
+.yt{position:relative;aspect-ratio:16/9;border-radius:var(--r);overflow:hidden;border:1px solid var(--line-2);background:var(--bg-2);box-shadow:var(--shadow)}
+.yt img{width:100%;height:100%;object-fit:cover}
+.yt iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.yt .play-over small{position:absolute;bottom:1rem;left:1rem;font:500 .8rem var(--sans);color:var(--fg);background:#fff;padding:.3rem .6rem;border-radius:3px;border:1px solid var(--line)}
+.agents{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,12rem),1fr));gap:.7rem}
+.agent{padding:1rem;border-radius:4px;border:1px solid var(--line);background:#fff;display:flex;gap:.7rem;align-items:center;font-weight:600;font-size:.95rem}
+.agent i{width:2.2rem;height:2.2rem;border-radius:4px;flex:none;display:grid;place-items:center;background:var(--navy-soft);color:var(--navy);font:600 .78rem var(--sans);font-style:normal}
+.agent.you i{background:var(--accent-soft);color:var(--accent)}
+.limits{display:flex;flex-direction:column;gap:.6rem}
+.limit{display:grid;grid-template-columns:auto 1fr;gap:.9rem;padding:.9rem 1.1rem;border-radius:4px;border:1px solid #e3cfa6;border-left:3px solid var(--gold);background:var(--gold-soft);color:var(--fg)}
+.limit b{font:600 .7rem var(--sans);color:var(--gold);letter-spacing:.1em;padding-top:.2rem}
+.learn{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.65rem}
+.learn li{display:grid;grid-template-columns:1.5rem 1fr;gap:.6rem;color:var(--fg)}
+.learn li::before{content:"✓";color:var(--accent);font-weight:700}
+.side{position:sticky;top:6rem;padding:1.5rem;display:flex;flex-direction:column;gap:1.1rem;border-top:3px solid var(--accent)}
+.facts{display:grid;grid-template-columns:auto 1fr;gap:.55rem 1rem;font-size:.93rem;margin:0}
+.facts dt{color:var(--dim);font:600 .7rem var(--sans);letter-spacing:.08em;text-transform:uppercase;padding-top:.2rem}
+.facts dd{margin:0;font-weight:600}
+.side ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:.45rem;font-size:.93rem;color:var(--muted);border-top:1px solid var(--line);padding-top:1rem}
+.side li::before{content:"— ";color:var(--accent)}
+.pager{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:1.4rem}
+.pager a{text-decoration:none;color:var(--accent);font-weight:600}
+.pager a:hover{text-decoration:underline}
+@media (max-width:960px){.d-grid{grid-template-columns:minmax(0,1fr)}.side{position:static}}
+
+[hidden]{display:none!important}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .rv{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<div class="util"><div class="wrap"><span>Agentic AI simulations<span class="hide-sm"> · created by Abhishek Kumar Jha &amp; Ashish Desai</span></span><a href="#contact">Request a walkthrough</a></div></div>
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="AI Decision Desk, home">
+      <span class="mark" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span><b>AI Decision Desk</b><small>Agentic AI simulations</small></span>
+    </a>
+    <nav class="links" id="links" aria-label="Main">
+      <a href="#how">How it works</a>
+      <a href="#demo">Live demo</a>
+      <a href="#catalogue">Simulations</a>
+      <a href="#expertise">The science</a>
+      <a href="#audiences">For faculty</a>
+      <a href="#licensing">Licensing</a>
+      <a href="#team">Team</a>
+      <a class="btn primary" href="#contact">Request access</a>
+    </nav>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="links" aria-label="Open menu">
+      <svg class="ham" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg><svg class="x" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="home">
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <span class="kicker rv">Agentic AI simulations for business schools &amp; firms</span>
+        <h1 class="rv d1">Teach managers to <em class="s">lead</em> a team of AI agents.</h1>
+        <p class="lede rv d2"><span class="typed-line">Participants run a committee of AI agents on <span class="typed" id="typed" aria-live="off">a Diwali voucher budget.</span></span><br>Ready-to-teach cases with sealed outcomes, hard limits and scoring keys.</p>
+        <div class="cta-row rv d3">
+          <a class="btn primary" href="#catalogue">Explore the simulations
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="btn ghost" href="#demo">Try the live demo</a>
+        </div>
+        <div class="stats rv d3">
+          <div class="stat"><b data-count="8">0</b><span>Decision desks</span></div>
+          <div class="stat"><b data-count="33">0</b><span>Agent roles</span></div>
+          <div class="stat"><b>3–20</b><span>Hours per desk</span></div>
+          <div class="stat"><b data-count="8">0</b><span>Business functions</span></div>
+        </div>
+      </div>
+      <figure class="hero-fig rv d2">
+        <div class="frame">
+          <video id="heroVid" autoplay muted loop playsinline preload="auto" poster="media/hero-poster.jpg" aria-label="Animation of an AI agent committee: records flow to five agents, a hard limit blocks one proposal, and approved decisions reach the centre.">
+            <source src="media/hero.mp4" type="video/mp4">
+          </video>
+          <span class="live">Committee at work</span>
+        </div>
+        <figcaption>Five agents advise. A hard limit, owned by a person, blocks what breaks the rules.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <div class="strip">
+    <div class="wrap">
+      <div><b>Case-based</b>Fictional companies, real-looking data, one decision.</div>
+      <div><b>Checked against reality</b>Sealed outcomes reveal what actually happened.</div>
+      <div><b>People stay accountable</b>Limits and the final call belong to a person.</div>
+      <div><b>Classroom-ready</b>Briefs, data, instructor keys and intro videos.</div>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <section class="sec" id="how">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker rv">How a Decision Desk works</span>
+        <h2 class="rv d1">Four moves. Thirty seconds. <em class="s">One real decision.</em></h2>
+        <p class="lede rv d2">Each desk drops participants into a fictional company with a real-looking file of records. The agents advise. A person sets the limits and makes the call.</p>
+      </div>
+      <div class="how">
+        <div class="vid-frame rv">
+          <video id="exVid" preload="metadata" playsinline muted poster="media/explainer-poster.jpg">
+            <source src="media/explainer.mp4" type="video/mp4">
+          </video>
+          <button class="play-over" id="exPlay" aria-label="Play the 30 second explainer"><span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l13-7.5z"/></svg></span></button>
+        </div>
+        <ol class="steps rv d1" id="steps">
+          <li><button data-t="0"><span class="n">01</span><b>A business problem</b><small>A company, a decision, a budget and thousands of records.</small><i class="bar"></i></button></li>
+          <li><button data-t="6"><span class="n">02</span><b>A committee of agents</b><small>You design each agent's role, inputs, output and "must never" list.</small><i class="bar"></i></button></li>
+          <li><button data-t="12"><span class="n">03</span><b>Limits a person owns</b><small>Budgets, caps and policy that no agent, and no learning, can move.</small><i class="bar"></i></button></li>
+          <li><button data-t="18"><span class="n">04</span><b>A reality check</b><small>Sealed outcomes show where the agents were right and where a human should have stepped in.</small><i class="bar"></i></button></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIVE DEMO -->
+  <section class="sec alt" id="demo">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker rv">Live demo · Masala Mile</span>
+        <h2 class="rv d1">You set the limits. <em class="s">Watch the committee work.</em></h2>
+        <p class="lede rv d2">A simplified version of Desk 1, running on 1,000 sample customers. Move the limits, run the committee, and see the guardrails block plans that break them.</p>
+      </div>
+      <div class="demo">
+        <div class="panel ctrl rv">
+          <h3>Your limits <span class="muted" style="font-weight:500;font-size:.85rem">· owned by the CMO</span></h3>
+          <div class="field">
+            <label for="fBudget">Voucher budget <output id="oBudget"></output></label>
+            <input type="range" id="fBudget" min="4000" max="30000" step="500" value="13500">
+          </div>
+          <div class="field">
+            <label for="fCap">Contact cap <output id="oCap"></output></label>
+            <input type="range" id="fCap" min="5" max="40" step="1" value="20">
+          </div>
+          <div class="field">
+            <label for="fFloor">Return floor <output id="oFloor"></output></label>
+            <input type="range" id="fFloor" min="1" max="5" step="0.5" value="2">
+          </div>
+          <p class="hint">Vouchers: V50 wins back 25% of customers who would leave, V120 wins back 40%. Return = margin saved for every ₹1 of voucher value.</p>
+          <button class="btn primary" id="runBtn" style="justify-content:center">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l13-7.5z"/></svg>Run the committee</button>
+        </div>
+        <div class="panel term rv d1">
+          <div class="term-top"><i></i><i></i><i></i><span>decision-desk · masala-mile · demo sample</span></div>
+          <div class="log" id="log" aria-live="polite"><div class="ln idle">› Set your limits and press "Run the committee".</div></div>
+          <div class="approve" id="approve">
+            <button class="btn primary" id="apprBtn">Approve plan</button>
+            <button class="btn ghost" id="rejBtn">Send back</button>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><span>Customers contacted</span><b id="kC">–</b></div>
+            <div class="kpi"><span>Voucher spend</span><b id="kS">–</b></div>
+            <div class="kpi"><span>Margin protected</span><b id="kM">–</b></div>
+            <div class="kpi"><span>Return per ₹1</span><b id="kR">–</b></div>
+          </div>
+        </div>
+      </div>
+      <p class="muted rv" style="font-size:.85rem;margin-top:1rem">Demo figures are illustrative and use a modified sample. The full desk adds data-quality checks, a learning cycle and a blind second book.</p>
+    </div>
+  </section>
+
+  <!-- CATALOGUE -->
+  <section class="sec" id="catalogue">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker rv">The catalogue</span>
+        <h2 class="rv d1">Eight desks. Eight industries. <em class="s">Hover to preview.</em></h2>
+        <p class="lede rv d2">Every desk ships with a narrated introduction video, a student brief with data files, and an instructor key with scoring tools.</p>
+      </div>
+      <div class="filters rv" role="group" aria-label="Filter by level" id="filters">
+        <button class="chip" aria-pressed="true" data-f="all">All desks</button>
+        <button class="chip" aria-pressed="false" data-f="Beginner">Beginner</button>
+        <button class="chip" aria-pressed="false" data-f="Intermediate">Intermediate</button>
+        <button class="chip" aria-pressed="false" data-f="Advanced">Advanced</button>
+      </div>
+      <div class="grid" id="grid"></div>
+    </div>
+  </section>
+
+  <!-- PRODUCT LINES -->
+  <section class="sec" id="tracks" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker rv">Three product lines</span>
+        <h2 class="rv d1">From one agent to a full committee.</h2>
+      </div>
+      <div class="tracks">
+        <article class="panel track glow rv">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="6" y="6" width="12" height="12" rx="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg></div>
+          <span class="status soon">Coming soon</span>
+          <h3>Agent Labs</h3>
+          <p>One agent, one analysis task. Write its role, inputs, output and "must not" list, then improve it over three rounds on data with a hidden truth.</p>
+          <ul><li>6 labs, from A/B tests to double machine learning</li><li>A trap built into every dataset</li></ul>
+        </article>
+        <article class="panel track glow rv d1">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="9" width="6" height="6" rx="1.5"/><path d="M8 12h3l3-4h0l3 4h5"/><circle cx="14" cy="8" r="0"/><path d="M14 8l3 4-3 4-3-4z"/></svg></div>
+          <span class="status soon">Coming soon</span>
+          <h3>Workflow Studios</h3>
+          <p>A multi-step analysis. Decide which steps the agent does, which go to fixed rules and which need a person, and where a failed check stops the line.</p>
+          <ul><li>5 studios, from surveys to synthetic control</li><li>Gates, reruns and honest "insufficient evidence"</li></ul>
+        </article>
+        <article class="panel track feat glow rv d2">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="5" r="2.5"/><circle cx="5" cy="17" r="2.5"/><circle cx="19" cy="17" r="2.5"/><circle cx="12" cy="13" r="2"/><path d="M12 7.5v3.5M6.8 15.5l3.6-1.6M17.2 15.5l-3.6-1.6"/></svg></div>
+          <span class="status live">Available now</span>
+          <h3>Decision Desks</h3>
+          <p>A committee of AI agents makes a business decision on thousands of records. You own the limits and the final call, and you face the sealed outcomes.</p>
+          <ul><li>8 desks, beginner to advanced</li><li>3 to 20 hours each</li></ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERTISE -->
+  <section class="sec alt" id="expertise">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker rv">The science underneath</span>
+        <h2 class="rv d1">Built by people who build with AI, <em class="s">and know where it breaks.</em></h2>
+        <p class="lede rv d2">These aren't prompt-writing exercises. Each simulation is engineered around a real failure mode of AI systems, and the data is built so that blind trust gets caught.</p>
+      </div>
+      <div class="principles">
+        <div class="panel principle rv"><b>Sealed outcomes</b><p>What actually happened stays locked until participants commit. No hindsight, no gaming.</p></div>
+        <div class="panel principle rv d1"><b>Blind rounds</b><p>Learning is tested on a book the agents have never seen, so overfitting shows up.</p></div>
+        <div class="panel principle rv d2"><b>Hard limits</b><p>Budgets, caps and policy sit outside the agents. No prompt and no learning can move them.</p></div>
+        <div class="panel principle rv d3"><b>Planted failure modes</b><p>Models that are wrong for one group, drifting data and agents blind to the limits wait to be found.</p></div>
+      </div>
+      <h3 class="rv" style="margin-bottom:1.2rem">Inside a desk: a real agent spec from Desk 1</h3>
+      <div class="spec">
+        <div class="panel code rv" aria-label="Agent specification for the Head of Retention">
+          <div class="c"># masala-mile / committee / head_of_retention</div>
+          <div class="row"><span class="k">role</span><span class="s2">DECIDES</span></div>
+          <div class="row"><span class="k">task</span><span>Picks NONE, V50 or V120 for each customer, within the three limits, and writes the reason next to every offer.</span></div>
+          <div class="row"><span class="k">must_never</span><span class="w">Breach a limit. Send an offer without a written basis.</span></div>
+          <div class="row"><span class="k">limits</span><span class="a">budget ₹80,000 · contact cap 20% · return floor 2.0×</span></div>
+          <div class="row"><span class="k">owner</span><span>CMO (human) · approves learning · makes the final call</span></div>
+          <div class="row"><span class="k">upstream</span><span>Head of Customer Analytics (margin_at_risk.csv) · file gated by Data Quality Checker (PASS / FAIL)</span></div>
+        </div>
+        <div class="panel prec rv d1">
+          <h3>The precision standard participants are graded on</h3>
+          <p class="muted" style="font-size:.93rem">Every rule states its intent and carries the exact test. If a stranger and a machine could act differently, the rule fails.</p>
+          <div class="pair"><div class="f"><b>FAILS</b>Do not waste vouchers on loyal customers.</div><div class="ps"><b>PASSES</b>Do not send any voucher to a customer whose return is below 2.0, because the expected margin saved would be less than twice the voucher value.</div></div>
+          <div class="pair"><div class="f"><b>FAILS</b>Watch out for bad data.</div><div class="ps"><b>PASSES</b>Block any file in which pred_lapse_prob is below 0 or above 1 on any row, because a probability outside that range is impossible.</div></div>
+        </div>
+      </div>
+      <h3 class="rv" style="margin-bottom:1rem">Failure modes engineered into the desks</h3>
+      <div class="fails rv">
+        <span>Model wrong for one customer group</span><span>Drift between rounds</span><span>AI scorer wrong for one group</span><span>Recommender blind to hard limits</span><span>Automation bias</span><span>Dirty, mixed-channel data</span><span>Overfitting to one book</span><span>Silent pipeline anomaly</span>
+      </div>
+      <h3 class="rv" style="margin-bottom:1.2rem">The method library behind the Labs and Studios <span class="status soon" style="vertical-align:middle;margin-left:.4rem">Coming soon</span></h3>
+      <div class="methods" id="methods"></div>
+    </div>
+  </section>
+
+  <!-- AUDIENCES -->
+  <section class="sec" id="audiences">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker rv">Who it's for</span>
+        <h2 class="rv d1">Ready for your classroom, your cohort or your boardroom.</h2>
+      </div>
+      <div class="tabs rv" role="tablist" aria-label="Audience">
+        <button role="tab" aria-selected="true" aria-controls="aud-0" id="tab-0">Faculty</button>
+        <button role="tab" aria-selected="false" aria-controls="aud-1" id="tab-1" tabindex="-1">Corporate L&amp;D</button>
+        <button role="tab" aria-selected="false" aria-controls="aud-2" id="tab-2" tabindex="-1">Students</button>
+      </div>
+      <div class="panel aud rv" role="tabpanel" id="aud-0" aria-labelledby="tab-0">
+        <div><h3>Teach agentic AI with cases that grade themselves honestly.</h3><p class="muted">Drop a desk into an MBA, executive or analytics course. Everything you need to run the session is in the pack.</p></div>
+        <ul><li><span><b>Instructor key</b> with the reference solution and the planted traps explained</span></li><li><span><b>Sealed actuals and scoring tools</b> so results are checked against what really happened</span></li><li><span><b>Narrated intro video</b> for every desk to open the session</span></li><li><span><b>Research readings</b> for desks 4 to 8 to anchor discussion</span></li></ul>
+      </div>
+      <div class="panel aud" role="tabpanel" id="aud-1" aria-labelledby="tab-1" hidden>
+        <div><h3>Train managers to supervise AI before they supervise it for real.</h3><p class="muted">Run a desk as a half-day or multi-day workshop for teams adopting AI agents in marketing, operations, HR or sales.</p></div>
+        <ul><li><span><b>Functions your teams know:</b> retention, expansion, dispatch, returns, hiring, content and negotiation</span></li><li><span><b>Governance habits</b> that carry straight into real deployments: limits, approvals and audit trails</span></li><li><span><b>Facilitated sessions</b> by the faculty authors, on request</span></li><li><span><b>Team debriefs</b> built on measured outcomes, not opinions</span></li></ul>
+      </div>
+      <div class="panel aud" role="tabpanel" id="aud-2" aria-labelledby="tab-2" hidden>
+        <div><h3>Practise the job AI will hand you: being accountable for it.</h3><p class="muted">Work through a real decision, defend your limits and see what your committee got right.</p></div>
+        <ul><li><span><b>No coding required.</b> Every idea is explained where it first appears</span></li><li><span><b>Write precise agent instructions</b> and see what vagueness costs</span></li><li><span><b>Find where the model is wrong</b> before the outcomes are revealed</span></li><li><span><b>A portfolio-worthy deliverable</b> from every desk</span></li></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEAM -->
+  <section class="sec" id="team" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker rv">The team</span>
+        <h2 class="rv d1">Two researchers who study how people work with intelligent systems.</h2>
+      </div>
+      <div class="team">
+        <article class="panel person glow rv">
+          <div class="pid"><span class="avatar" aria-hidden="true">AJ</span><div><h3>Dr. Abhishek Kumar Jha</h3><p class="role">Co-creator, AI Decision Desk</p></div></div>
+          <dl>
+            <dt>Research</dt><dd>Artificial intelligence, computational social science, information privacy, behavioural science</dd>
+            <dt>Teaches</dt><dd>Machine learning in business, predictive analytics, social media analytics</dd>
+            <dt>Education</dt><dd>Ph.D., Management Information Systems, IIM Indore (2025) · B.E., Information Science Engineering, VTU</dd>
+            <dt>Background</dt><dd>Best Doctoral Student Award at IIM Indore. Previously Lecturer at Deakin University. Work presented at INFORMS and ACR.</dd>
+          </dl>
+        </article>
+        <article class="panel person glow rv d1">
+          <div class="pid"><span class="avatar" aria-hidden="true">AD</span><div><h3>Dr. Ashish Desai</h3><p class="role">Co-creator, AI Decision Desk</p></div></div>
+          <dl>
+            <dt>Research</dt><dd>Digital financial literacy, alternative data for public policy, digital public infrastructure, fintech, big data for risk management</dd>
+            <dt>Teaches</dt><dd>Big data for public policy, fintech risk management, economics of platforms, monitoring and evaluation</dd>
+            <dt>Education</dt><dd>Ph.D., Economics, IIM Kozhikode (2023) · MBA (MMS), JBIMS · B.E., Electrical Engineering, VJTI</dd>
+            <dt>Background</dt><dd>27+ years building technology-driven financial services across the Middle East, Africa and South Asia. Former Director of Monitoring &amp; Evaluation, NITI Aayog.</dd>
+          </dl>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- LICENSING -->
+  <section class="sec alt" id="licensing">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker rv">Licensing</span>
+        <h2 class="rv d1">Pick the way you'll run it.</h2>
+        <p class="lede rv d2">Every licence includes the full student and instructor packs. Start with a walkthrough of Desk 1 and decide from there.</p>
+      </div>
+      <div class="lic">
+        <article class="panel tier glow rv">
+          <span class="who">For a course</span>
+          <div class="price">Per course<small>Business schools &amp; universities · price on request</small></div>
+          <ul><li>Any desks you choose for a course or term</li><li>Student briefs, data files and sealed actuals</li><li>Instructor keys and scoring tools</li><li>Intro videos for every desk</li></ul>
+          <a class="btn ghost" href="mailto:abhishek.jha@spjimr.org?subject=AI%20Decision%20Desk%20%E2%80%94%20course%20licence">Ask about course licences</a>
+        </article>
+        <article class="panel tier feat glow rv d1">
+          <span class="who">For a cohort</span>
+          <div class="price">Per cohort<small>Executive education &amp; programmes · price on request</small></div>
+          <ul><li>A sequence of desks built for one cohort, beginner to advanced</li><li>Everything in the course licence</li><li>Help choosing and sequencing desks</li><li>Option of a session led by the authors</li></ul>
+          <a class="btn primary" href="mailto:abhishek.jha@spjimr.org?subject=AI%20Decision%20Desk%20%E2%80%94%20cohort%20licence">Plan a cohort</a>
+        </article>
+        <article class="panel tier glow rv d2">
+          <span class="who">For a company</span>
+          <div class="price">Per workshop<small>Corporate L&amp;D &amp; leadership teams · price on request</small></div>
+          <ul><li>Desks matched to your functions and AI roll-out</li><li>Facilitated workshop, half-day or multi-day</li><li>Debrief on guardrails, approvals and audit trails</li><li>Packs and videos for every participant</li></ul>
+          <a class="btn ghost" href="mailto:abhishek.jha@spjimr.org?subject=AI%20Decision%20Desk%20%E2%80%94%20corporate%20workshop">Talk to us</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="sec" id="faq">
+    <div class="wrap">
+      <div class="sec-head"><span class="kicker rv">Questions</span><h2 class="rv d1">Before you ask.</h2></div>
+      <div class="faq rv">
+        <details><summary>Do participants need to code?</summary><p>No. Participants write agent instructions in plain language and reason about limits and outcomes. Teams that want to build the agents in code can do so with the same data.</p></details>
+        <details><summary>Which AI tools do the desks work with?</summary><p>The desks are tool-agnostic. Participants can run their committee in any capable AI assistant or agent framework. The learning is in the design, the limits and the checking, not in a specific product.</p></details>
+        <details><summary>How long does a desk take?</summary><p>Beginner desks run in a single 3 to 5 hour session. Advanced desks such as the Customer Growth Committee run over several rounds, up to 16 to 20 hours.</p></details>
+        <details><summary>Are the companies and data real?</summary><p>All companies and records are fictional, built to behave like real business data, with planted problems for participants to find.</p></details>
+        <details><summary>How do we license a desk?</summary><p>Write to us with your institution or firm, your audience size and the desks you're interested in. Packs are shared on request, with licensing for courses, cohorts and corporate programmes.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="sec" id="contact" style="padding-top:0">
+    <div class="wrap">
+      <div class="panel cta rv">
+        <div style="display:flex;flex-direction:column;gap:1rem">
+          <span class="kicker">Request access</span>
+          <h2>Bring AI Decision Desk to your <em class="s">classroom or firm.</em></h2>
+          <p class="lede">Tell us your institution or company, the audience, and which desks you'd like to run. We'll send the pack details and a walkthrough.</p>
+        </div>
+        <div class="mailbox">
+          <span class="addr" id="addr">abhishek.jha@spjimr.org</span>
+          <div class="cta-row">
+            <a class="btn primary" href="mailto:abhishek.jha@spjimr.org?subject=AI%20Decision%20Desk%20%E2%80%94%20access%20request">Email us</a>
+            <button class="btn ghost" id="copyBtn" type="button">Copy address</button>
+          </div>
+          <span class="note" id="copyNote" role="status"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- DETAIL VIEW -->
+<main id="detail" hidden>
+  <div class="wrap">
+    <p class="crumbs"><a href="#catalogue">← All simulations</a> / <span id="dCrumb"></span></p>
+    <div class="d-head">
+      <span class="kicker" id="dKicker"></span>
+      <h1 id="dTitle" style="font-size:clamp(2.1rem,4.4vw,3.3rem)"></h1>
+      <p class="lede" id="dTag"></p>
+      <div class="d-chips" id="dChips"></div>
+    </div>
+    <div class="d-grid">
+      <div class="d-main">
+        <div class="yt" id="dVideo"></div>
+        <section><h2>The situation</h2><div class="prose" id="dProblem"></div></section>
+        <section><h2>The committee</h2><div class="agents" id="dAgents"></div></section>
+        <section id="dLimitsSec"><h2>Hard limits</h2><div class="limits" id="dLimits"></div></section>
+        <section><h2>What participants practise</h2><ul class="learn" id="dLearn"></ul></section>
+        <div class="pager" id="dPager"></div>
+      </div>
+      <aside class="panel side" aria-label="Request this desk">
+        <span class="status live">Available now</span>
+        <h3 id="sTitle"></h3>
+        <dl class="facts" id="sFacts"></dl>
+        <a class="btn primary" href="#contact" style="justify-content:center">Request this desk</a>
+        <ul><li>Student brief and data files</li><li>Instructor key and scoring tools</li><li>Sealed actuals for the reality check</li><li>Narrated introduction video</li></ul>
+      </aside>
+    </div>
+  </div>
+</main>
+
+<footer><div class="wrap"><span>© AI Decision Desk · Abhishek Kumar Jha &amp; Ashish Desai</span><span>All companies and data in the simulations are fictional.</span></div></footer>
+
+<script>
+(function(){
+  "use strict";
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+  function inr(n){return "₹"+Math.round(n).toLocaleString("en-IN")}
+
+  /* ---------- data ---------- */
+  var CASES=[
+    {n:1,yt:"lNFO4unwlu4",lv:"Beginner",dur:"3–4 hours",rounds:"1 round + blind book",fn:"Marketing · Retention",name:"The Festive Win-Back Desk",co:"Masala Mile",role:"Chief Marketing Officer",
+     tag:"Who gets a Diwali voucher, and how big, when the budget is fixed?",
+     p:["Masala Mile sells Indian pantry staples online to 6,000 existing customers. Diwali is coming, and marketing can send retention vouchers. But the budget is fixed, and too many vouchers teach customers to wait for discounts.","A model has already scored every customer's chance of lapsing. It is right for most customers and wrong for a few groups. Finding those groups, before the sealed outcomes are opened, is the heart of the desk."],
+     agents:["Head of Customer Analytics","Head of Retention","Data Quality Checker"],
+     limits:[["BUDGET","Total voucher value never exceeds ₹80,000."],["CONTACT CAP","No more than 20% of customers receive any voucher."],["RETURN FLOOR","At least ₹2 of margin saved for every ₹1 of voucher value."]],
+     learn:["Write precise instructions for each agent in a committee.","Keep spending inside limits no agent can change.","Compare what was predicted with what actually happened.","Approve any learning yourself, then test it on an unseen book."]},
+    {n:2,yt:"oaTJMFyy2_o",lv:"Advanced",dur:"8–10 hours",rounds:"2 rounds",fn:"Retail strategy · Capital",name:"The Store Expansion Desk",co:"Saffron Street",role:"Head of Expansion",
+     tag:"Which new café sites are worth the capital?",
+     p:["Saffron Street Cafés has grown for six years and now has more candidate sites than it can afford. The committee must pick the sites that will actually make money and explain every choice to a sceptical board.","The money is bigger than in Desk 1, there are two rounds, and one rule changes between them. Some of the data is wrong in ways that have to be proven and repaired."],
+     agents:["Data Quality Checker","Site Analyst","Cost and Cash Analyst","Portfolio Planner"],
+     limits:[["CAPITAL","Total capex never exceeds ₹15 crore in round 1. The board announces a new ceiling for round 2."],["OPENINGS","No more than 25 openings in a round."],["CITY CAP","No more than 4 openings in any one city."],["PAYBACK","Every site pays back within 30 months on your corrected forecast."]],
+     learn:["Allocate scarce capital across competing options.","Prove and document data repairs.","Re-plan when a hard limit changes mid-game.","Defend each choice with a written reason."]},
+    {n:3,yt:"gNWt2U4RHjg",lv:"Advanced",dur:"16–20 hours",rounds:"4 quarterly rounds",fn:"Growth · Subscriptions",name:"The Customer Growth Committee",co:"Tarang",role:"Chief Marketing Officer",
+     tag:"How to spend one growth budget across acquisition and retention for a year.",
+     p:["Tarang is a language-learning app. Two desks share one quarterly budget: Acquisition turns free-trial users into subscribers, Retention keeps paying subscribers from leaving.","Over four quarters the committee decides, record by record, who gets a nudge, a trial extension, a call, a credit or a coaching session. The world drifts between quarters, and the fourth is blind, with new rules."],
+     agents:["Data Quality Checker","Acquisition Analyst","Retention Analyst","Budget Allocator","Campaign Planner","Learning Officer"],
+     limits:[["BUDGET","Both desks together spend no more than ₹1,80,000 a quarter in rounds 1 to 3."],["CONTACT CAP","No more than 30% of either file receives any action."],["RETURN FLOOR","At least ₹2 of expected margin for every ₹1 spent."],["FREEBIE GUARD","Leads who have had 3 or more offers get a nudge only."]],
+     learn:["Target persuadable customers, not those who would act anyway.","Detect drift and re-test learning every round.","Split one budget across competing desks.","Face a blind final quarter with new rules."]},
+    {n:4,yt:"uqWQI5ZGOJM",lv:"Beginner",dur:"3–5 hours",rounds:"1 daily batch",fn:"Operations · Logistics",name:"The Dispatch Desk",co:"Setu Express",role:"Operations Lead",
+     tag:"Which parcels can the agents handle end to end, and which need a person?",
+     p:["Setu Express is a same-day delivery startup in Pune. Every morning a fresh batch of parcels from kirana stores and small sellers must be assigned to riders and out the door within the hour.","Four AI agents do most of the work. Your job isn't to run deliveries. It's to draw the automation boundary: which parcels the agents can be trusted with, and which a human must check first."],
+     agents:["Zone-Bot","ETA-Bot","Rider-Bot","Flag-Bot"],
+     limits:[["COD","Any cash-on-delivery parcel above ₹5,000 always gets manual review."],["RIDER LOAD","No rider is assigned more than 35 parcels in a shift."],["FRAGILE","Any parcel Flag-Bot flags as fragile always gets manual review."]],
+     learn:["Decide the human–AI split for a live process.","Describe each agent precisely using SIPOC.","Weigh speed against the cost of a mishandled parcel.","Turn the split into a rule others can run."]},
+    {n:5,yt:"Un5EpE3I9jU",lv:"Beginner",dur:"3–5 hours",rounds:"1 round, 6 weeks of data",fn:"Trust & safety · Returns",name:"The Return Desk",co:"QuickKart",role:"Trust & Safety Lead",
+     tag:"Did the automated returns process hold up, and what should change?",
+     p:["QuickKart, a Bengaluru marketplace, processes thousands of returns a week. Approving triggers an instant refund. Most of the decision is automated by a small team of AI agents, with a human lead reviewing the cases they're unsure about.","You've inherited six weeks of review data and no notes. Work through it week by week, as if it were arriving live, and find out whether the system did what it was supposed to do."],
+     agents:["Evidence-Bot","Pattern-Bot","Ledger-Bot","Claim-Bot"],
+     limits:[["PAYOUT","Weekly refund payout never exceeds ₹6,00,000."],["ORDER VALUE","No return on an order above ₹3,000 is auto-approved without human review."],["ESCALATIONS","Customers with more than 3 escalations in 90 days always get human review."]],
+     learn:["Audit an automated decision pipeline.","Spot an anomaly as it emerges week by week.","Tune when cases escalate to a human.","Recommend changes a successor can follow."]},
+    {n:6,yt:"Kk65DkkPVg4",lv:"Intermediate",dur:"Single session",rounds:"1 round",fn:"HR · Hiring",name:"The Hiring Panel",co:"Bright Path Retail",role:"Human Hiring Panel",
+     tag:"Who makes the festive-season shortlist across six cities?",
+     p:["Bright Path Retail runs about 140 stores and is hiring associates at scale for the festive season. Candidates apply online and on paper at store walk-in desks.","Four AI agents score every candidate. The panel is accountable for the shortlist, for catching any place an agent is systematically wrong, and for leaving a clear trail for every override. The file needs cleaning first."],
+     agents:["Screen-Bot","Skill-Bot","Reference-Bot","Fit-Bot"],
+     limits:[["SHORTLIST","Every city ends with at least 15 shortlisted candidates."],["NO UNSEEN REJECTION","No candidate is rejected without a human seeing their scores."],["REAPPLICATION","Reapplicants within 90 days are compared against their prior application."]],
+     learn:["Find where an agent is systematically wrong.","Check fairness across channels and cities.","Override scores with a clear audit trail.","Clean messy data before trusting it."]},
+    {n:7,yt:"psEznjoTRWw",lv:"Intermediate",dur:"3–5 hours",rounds:"1 round, 8 weeks",fn:"Content · Marketing",name:"The Editorial Desk",co:"Rangoli Foods",role:"Brand Editor",
+     tag:"Which festival content drafts get published, edited or rejected?",
+     p:["Rangoli Foods sells traditional Indian snacks direct to consumers, with campaigns built around Diwali, Holi, Pongal, Onam and more, across languages and regions.","Four AI agents draft, localise, score and check the content. As Brand Editor you review eight weeks of drafts spanning three festivals, work out where the pipeline can be trusted, and write the review policy you'd actually run."],
+     agents:["Copy-Bot","Localize-Bot","Score-Bot","Compliance-Bot"],
+     limits:[["COMPLIANCE","No health or nutrition claim is published without compliance sign-off."],["REGIONAL REVIEW","Festival content in Hindi, Tamil or Malayalam is reviewed by a person before publishing."],["SPEND CAP","No single draft gets more than ₹25,000 of promoted spend without the owner's sign-off."]],
+     learn:["Set a review policy for generative content.","Catch localisation and compliance failures.","Decide where human editing adds the most value.","Balance volume against brand risk."]},
+    {n:8,yt:"Cdk2SzlCANY",lv:"Intermediate",dur:"Single session",rounds:"1 round",fn:"Sales · Negotiation",name:"The Negotiation Room",co:"Nimbus Traders",role:"Key Account Manager",
+     tag:"Which credit period, rebate and minimum order should each buyer get?",
+     p:["Nimbus Traders, an FMCG distributor in Ahmedabad, negotiates annual trade terms with its retail-chain buyers: credit days, volume rebate and minimum order quantity.","Four agents compile history, recommend a counter-offer, project the margin and flag risk. None of them sign anything. You do. Your job is to decide how closely to follow each recommendation, and when to deviate."],
+     agents:["History-Bot","Deal-Bot","Margin-Bot","Risk-Bot"],
+     limits:[["CREDIT","Credit period never exceeds 75 days."],["MARGIN","No deal is signed with a negative projected margin impact."],["RISK","High-risk buyers need written personal sign-off."]],
+     learn:["Know when to follow an AI recommendation, and when not to.","Catch recommendations that breach limits the agent doesn't know.","Decide without realised outcomes to check against.","Document deviations for accountability."]}
+  ];
+  var METHODS=[
+    {k:"Lab",t:"Experiment Referee",m:"A/B testing with variance reduction, sequential testing and false-discovery control.",trap:"Uneven traffic split, early peeking and many metrics at once."},
+    {k:"Lab",t:"Rollout Evaluator",m:"Staggered difference-in-differences with an event study.",trap:"The effect differs wave by wave, so one average misleads."},
+    {k:"Lab",t:"Cutoff Analyst",m:"Regression discontinuity around a credit-score cutoff.",trap:"Applicants bunch just above the cutoff."},
+    {k:"Lab",t:"Forecast Auditor",m:"Conformal prediction intervals and rolling backtests.",trap:"A sudden market break and information leaking from the future."},
+    {k:"Lab",t:"Label Checker",m:"Prediction-powered inference to correct an AI labeller with a small human sample.",trap:"The AI labeller is biased for one segment or language."},
+    {k:"Lab",t:"Effect Explorer",m:"Double machine learning for heterogeneous treatment effects.",trap:"Poor overlap and a hidden driver of both offer and sales."},
+    {k:"Studio",t:"Model Watchtower",m:"Calibration checks, drift monitoring and a fairness audit.",trap:"The customer mix shifts and the model quietly degrades."},
+    {k:"Studio",t:"Policy Impact Desk",m:"Synthetic control with placebo tests.",trap:"Comparison units that don't resemble the treated unit."}
+  ];
+  var TYPED=["a Diwali voucher budget.","₹ crores of store expansion.","a festive hiring shortlist.","a morning dispatch batch.","six weeks of suspicious returns.","annual trade negotiations."];
+  /* Demo sample: margin at risk (₹) for 1,000 customers, derived from a modified Desk 1 sample */
+  var MAR=[101,350,1029,155,230,148,61,214,507,349,47,173,260,100,421,278,617,60,78,78,285,234,136,68,157,771,171,72,130,289,448,21,100,449,275,29,297,112,102,43,446,206,273,38,70,249,240,189,256,374,372,539,256,606,118,438,283,95,202,90,177,552,301,166,124,59,125,53,360,117,109,95,766,165,119,433,12,222,140,1370,218,63,161,467,321,110,120,14,693,455,106,129,514,230,451,77,69,466,89,664,585,233,75,13,135,165,16,122,71,210,367,110,179,68,144,488,661,341,329,61,209,288,398,119,188,404,424,47,85,350,131,421,891,5,1055,52,241,128,411,57,69,724,128,140,27,382,218,79,650,414,11,118,22,530,357,103,224,135,32,19,1698,211,911,219,282,125,160,389,3,171,12,56,118,48,162,26,46,286,159,106,491,199,37,101,232,119,252,90,593,73,36,190,450,238,489,531,377,328,118,155,318,457,65,84,275,148,241,16,223,79,195,373,602,89,113,178,86,517,90,187,103,182,467,343,94,131,121,26,283,1269,321,264,484,276,166,367,205,577,127,50,48,39,183,341,330,331,221,112,545,94,36,105,6,33,49,3,213,1182,116,249,63,370,331,190,622,312,302,77,105,33,517,178,448,17,496,59,71,117,58,52,247,137,25,52,27,8,152,81,258,35,17,387,138,324,387,277,27,13,245,105,315,27,5,12,11,147,19,632,633,128,51,198,215,366,91,19,694,118,313,151,421,56,38,23,522,28,345,689,49,128,14,113,650,131,101,121,623,340,512,331,188,106,227,143,24,140,178,350,89,389,284,260,2056,141,170,383,121,45,390,38,369,218,79,339,15,87,487,545,78,506,107,778,39,129,162,218,156,359,107,684,236,414,576,292,709,25,218,12,99,127,7,74,301,980,233,454,244,167,556,167,205,39,160,153,33,316,148,117,94,175,278,318,30,103,237,224,18,164,88,7,204,164,163,118,178,468,49,12,385,18,30,728,185,90,135,356,28,14,34,128,225,145,4,136,104,262,85,177,112,191,22,46,30,170,28,188,726,276,545,59,209,120,52,216,240,285,19,6,82,93,513,157,112,231,100,187,152,425,162,43,208,279,318,322,57,73,278,234,13,617,10,97,199,289,180,645,171,504,125,427,18,67,220,93,539,6,21,257,56,281,216,28,263,20,44,483,156,43,252,113,103,298,264,624,424,252,130,59,28,563,65,39,179,228,2,163,105,80,483,154,198,215,212,152,138,150,107,13,409,317,16,135,384,114,178,601,305,115,244,465,84,371,339,222,191,148,263,329,525,145,308,224,335,325,160,89,360,401,445,260,23,315,127,441,426,293,159,262,193,64,66,379,100,52,159,271,67,352,395,473,238,362,154,108,393,102,65,456,296,102,834,197,90,286,132,195,72,140,308,45,143,383,478,119,1240,410,299,77,139,16,173,109,41,203,161,97,96,771,61,206,199,91,241,137,366,91,225,135,255,256,87,143,19,382,247,157,251,97,179,160,61,63,490,52,295,6,386,488,134,405,117,143,74,219,157,125,1150,81,211,174,147,445,29,597,166,1445,263,182,302,259,340,25,392,176,85,282,96,222,216,144,6,103,325,96,21,142,240,500,89,23,331,39,78,31,231,172,175,36,310,121,98,22,103,522,158,288,119,6,31,446,141,59,339,88,99,144,110,123,227,285,461,28,126,42,15,135,331,170,8,56,147,234,265,342,451,116,203,143,424,578,227,124,269,71,32,270,67,146,634,37,140,120,336,713,188,125,271,7,208,1236,48,185,88,72,55,131,43,112,672,240,325,225,17,273,63,128,2,58,224,341,239,173,165,144,168,181,286,34,735,74,371,155,333,295,285,183,110,369,166,233,119,36,81,772,707,296,65,130,283,65,192,50,108,112,130,478,513,65,257,145,66,157,108,68,242,187,191,318,7,368,154,608,35,873,252,282,202,44,211,112,100,26,311,74,365,32,87,260,19,14,200,51,53,237,242,222,296,249,149,187,121,366,74,254,370,108,494,358,58,117,93,381,35,309,55,42,184,228,354,114,79,504,79,62,233,351,51,177,198,174,282,142,76,263,142,196,470,185,526,413,525,129,12,218,164,54,145,185,272,217,98,594,371,60,36,112,348,248,672,110,317,44,41,261,10,213,868,276,15,199,64,460,30,30,639,136,61,12,20,310,335,324,15,50,52,416,340,104,153,434,30,209,50,142,155,119,82,47,306,23,104,358,268,89,491,121,782,246,296,194,153,444,51,64,321,142,59,82,260,14];
+
+  /* ---------- nav ---------- */
+  var nav=document.getElementById("nav"),links=document.getElementById("links"),mb=document.getElementById("menuBtn");
+  function onScroll(){nav.classList.toggle("scrolled",window.scrollY>30)}
+  window.addEventListener("scroll",onScroll,{passive:true});onScroll();
+  function closeMenu(){links.classList.remove("open");mb.setAttribute("aria-expanded","false");mb.setAttribute("aria-label","Open menu")}
+  mb.addEventListener("click",function(){var o=links.classList.toggle("open");mb.setAttribute("aria-expanded",o);mb.setAttribute("aria-label",o?"Close menu":"Open menu")});
+  document.addEventListener("keydown",function(e){if(e.key==="Escape"&&links.classList.contains("open")){closeMenu();mb.focus()}});
+  document.addEventListener("click",function(e){if(links.classList.contains("open")&&!e.target.closest("#links,#menuBtn"))closeMenu()});
+  links.addEventListener("click",function(e){if(e.target.closest("a")){links.classList.remove("open");mb.setAttribute("aria-expanded","false")}});
+
+
+  /* ---------- typed ---------- */
+  var ty=document.getElementById("typed");
+  if(!reduce){
+    var wi=0,ci=TYPED[0].length,del=true;
+    (function tick(){
+      var w=TYPED[wi];
+      if(del){ci--;if(ci<=0){del=false;wi=(wi+1)%TYPED.length}}
+      else{ci++;if(ci>=TYPED[wi].length){del=true;ty.textContent=TYPED[wi];return setTimeout(tick,2200)}}
+      ty.textContent=TYPED[wi].slice(0,Math.max(ci,0));
+      setTimeout(tick,del?28:55);
+    })();
+  }
+
+  /* ---------- reveal + counters ---------- */
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}})},{threshold:.12,rootMargin:"0px 0px -40px 0px"});
+  function observe(root){(root||document).querySelectorAll(".rv:not(.in)").forEach(function(x){io.observe(x)})}
+  document.querySelectorAll(".hero .rv").forEach(function(x){x.classList.add("in")});
+  observe();
+  var counted=false;
+  function count(){
+    if(counted)return;counted=true;
+    document.querySelectorAll("[data-count]").forEach(function(b){
+      var to=+b.getAttribute("data-count");
+      if(reduce){b.textContent=to;return}
+      var t0=null;function step(t){if(!t0)t0=t;var k=Math.min((t-t0)/1400,1);b.textContent=Math.round(to*(1-Math.pow(1-k,3)));if(k<1)requestAnimationFrame(step)}
+      requestAnimationFrame(step);
+    });
+  }
+  setTimeout(count,600);
+
+  /* ---------- cursor glow ---------- */
+  document.addEventListener("pointermove",function(e){
+    var g=e.target.closest&&e.target.closest(".glow");if(!g)return;
+    var b=g.getBoundingClientRect();g.style.setProperty("--x",(e.clientX-b.left)+"px");g.style.setProperty("--y",(e.clientY-b.top)+"px");
+  });
+
+  /* ---------- explainer sync ---------- */
+  var ex=document.getElementById("exVid"),exPlay=document.getElementById("exPlay"),stepBtns=[].slice.call(document.querySelectorAll("#steps button"));
+  function playEx(t){if(t!=null)ex.currentTime=t;ex.play();exPlay.hidden=true;ex.controls=true}
+  exPlay.addEventListener("click",function(){playEx()});
+  stepBtns.forEach(function(b){b.addEventListener("click",function(){playEx(+b.getAttribute("data-t"))})});
+  ex.addEventListener("timeupdate",function(){
+    var t=ex.currentTime,idx=Math.min(Math.floor(t/6),3);
+    stepBtns.forEach(function(b,i){
+      var on=i===idx&&t<24;b.classList.toggle("on",on);
+      b.querySelector(".bar").style.width=(i<idx||t>=24?100:i===idx?((t-i*6)/6*100):0)+"%";
+    });
+  });
+  ex.addEventListener("ended",function(){exPlay.hidden=false;ex.controls=false});
+
+  /* ---------- demo ---------- */
+  var fB=document.getElementById("fBudget"),fC=document.getElementById("fCap"),fF=document.getElementById("fFloor");
+  function paint(i){i.style.setProperty("--p",((i.value-i.min)/(i.max-i.min)*100)+"%")}
+  function syncOut(){
+    document.getElementById("oBudget").textContent=inr(fB.value);
+    document.getElementById("oCap").textContent=fC.value+"%";
+    document.getElementById("oFloor").textContent=(+fF.value).toFixed(1)+"×";
+    [fB,fC,fF].forEach(paint);
+  }
+  [fB,fC,fF].forEach(function(i){i.addEventListener("input",syncOut)});syncOut();
+
+  var logEl=document.getElementById("log"),runBtn=document.getElementById("runBtn"),appr=document.getElementById("approve"),timers=[];
+  function line(tag,cls,msg){var d=el("div","ln");d.appendChild(el("span","tag "+cls,tag));d.appendChild(el("span","",msg));logEl.appendChild(d);logEl.scrollTop=logEl.scrollHeight}
+  function kpi(c,s,m){
+    document.getElementById("kC").textContent=c==null?"–":c.toLocaleString("en-IN");
+    document.getElementById("kS").textContent=s==null?"–":inr(s);
+    document.getElementById("kM").textContent=m==null?"–":inr(m);
+    document.getElementById("kR").textContent=(s?(m/s).toFixed(1)+"×":"–");
+  }
+  function plan(B,capN,floor){
+    // greedy by return: base V50 options, then V120 upgrades
+    var opts=[];
+    MAR.forEach(function(m,i){opts.push({i:i,up:false,cost:50,ben:.25*m});opts.push({i:i,up:true,cost:70,ben:.15*m})});
+    opts.sort(function(a,b){return b.ben/b.cost-a.ben/a.cost});
+    var got={},spend=0,ben=0,n=0,v120=0;
+    opts.forEach(function(o){
+      if(o.ben/o.cost<floor)return;
+      if(!o.up){if(n>=capN||spend+50>B)return;got[o.i]=1;n++;spend+=50;ben+=o.ben}
+      else{if(!got[o.i]||spend+70>B)return;spend+=70;ben+=o.ben;v120++}
+    });
+    return {n:n,spend:spend,ben:ben,v120:v120};
+  }
+  function run(){
+    timers.forEach(clearTimeout);timers=[];logEl.textContent="";appr.classList.remove("show");kpi();
+    var B=+fB.value,capN=Math.floor(MAR.length*fC.value/100),floor=+fF.value;
+    // naive first draft: everyone with a high enough return gets the bigger voucher
+    var dN=0,dS=0,dM=0;
+    // the eager first draft only asks "does the voucher pay for itself?" (1x), ignoring your floor and cap
+    MAR.forEach(function(m){if(.40*m/120>=1){dN++;dS+=120;dM+=.40*m}else if(.25*m/50>=1){dN++;dS+=50;dM+=.25*m}});
+    var final=plan(B,capN,floor);
+    var steps=[
+      ["DATA-QUALITY","sky","PASS · 1,000 customer records, no duplicates, lapse scores present for all."],
+      ["CUST-ANALYTICS","v","Ranked the book by margin at risk = lapse probability × 12-month margin."],
+      ["RETENTION","v","Eager draft v1 (any voucher that pays for itself): "+dN+" vouchers, "+inr(dS)+" spend, "+inr(dM)+" margin protected."]
+    ];
+    var breaks=[];
+    if(dS>B)breaks.push("Budget breached: "+inr(dS)+" > "+inr(B)+".");
+    if(dN>capN)breaks.push("Contact cap breached: "+dN+" > "+capN+" customers.");
+    if(dS&&dM/dS<floor)breaks.push("Return floor breached: average "+(dM/dS).toFixed(1)+"× < "+floor.toFixed(1)+"×, with vouchers below the floor.");
+    breaks.forEach(function(b){steps.push(["GUARDRAIL","bad","✕ "+b+" Draft blocked."])});
+    var changed=final.n!==dN||final.spend!==dS;
+    if(breaks.length){
+      steps.push(["RETENTION","v","Re-planning: fund the highest return per ₹1 first, upgrade to V120 only where the extra ₹70 clears the floor."]);
+    }else if(changed){
+      steps.push(["RETENTION","v","Trimming V120 upgrades that return less than "+floor.toFixed(1)+"× on the extra ₹70."]);
+    }
+    steps.push(["RETENTION","v",(changed?"Draft v2: ":"Draft v1 stands: ")+final.n+" vouchers ("+final.v120+" upgraded to V120), "+inr(final.spend)+" spend."]);
+    steps.push(["GUARDRAIL","ok","✓ Budget "+inr(final.spend)+" / "+inr(B)+" · contacts "+final.n+" / "+capN+" · every voucher ≥ "+floor.toFixed(1)+"× (average "+(final.spend?(final.ben/final.spend).toFixed(1):"0")+"×)"]);
+    if(final.n===0)steps.push(["GUARDRAIL","warn","No customer clears a "+floor.toFixed(1)+"× return floor. Consider whether the limit is too strict."]);
+    else steps.push(["CUST-ANALYTICS","warn","Caution: the lapse model may be wrong for some customer groups. The learning cycle tests this against sealed actuals."]);
+    steps.push(["YOU","ok","Awaiting your approval. No voucher is sent until a person signs off."]);
+    runBtn.disabled=true;
+    if(window.innerWidth<900)logEl.closest(".term").scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});
+    var delay=reduce?0:520;
+    steps.forEach(function(s,k){timers.push(setTimeout(function(){line(s[0],s[1],s[2]);if(k===steps.length-1){kpi(final.n,final.spend,final.ben);appr.classList.add("show");runBtn.disabled=false}},k*delay))});
+  }
+  runBtn.addEventListener("click",run);
+  document.getElementById("apprBtn").addEventListener("click",function(){line("YOU","ok","✓ Approved. Plan logged with reasons. In the full desk, sealed actuals now reveal what really happened.");appr.classList.remove("show")});
+  document.getElementById("rejBtn").addEventListener("click",function(){line("YOU","warn","↩ Sent back. Adjust the limits and run the committee again.");appr.classList.remove("show")});
+
+  /* ---------- catalogue ---------- */
+  var grid=document.getElementById("grid"),filt="all";
+  function card(c){
+    var a=el("a","panel case glow rv");a.href="#case-"+c.n;
+    var m=el("div","media");
+    var img=el("img");img.src="media/poster-"+c.n+".jpg";img.alt="";img.loading="lazy";m.appendChild(img);
+    var v=el("video");v.muted=true;v.loop=true;v.playsInline=true;v.preload="none";v.setAttribute("aria-hidden","true");v.dataset.src="media/teaser-"+c.n+".mp4";m.appendChild(v);
+    m.appendChild(el("span","num","DESK "+String(c.n).padStart(2,"0")));
+    var lv=el("span","pill lvl "+c.lv,c.lv);m.appendChild(lv);
+    a.appendChild(m);
+    var b=el("div","body");
+    b.appendChild(el("span","co",c.co+" · "+c.fn));
+    b.appendChild(el("h3","",c.name));
+    b.appendChild(el("p","",c.tag));
+    var f=el("div","foot");
+    f.appendChild(el("span","","◷ "+c.dur));f.appendChild(el("span","","◉ "+c.agents.length+" agents"));f.appendChild(el("span","","↻ "+c.rounds));
+    b.appendChild(f);a.appendChild(b);
+    if(!reduce){
+      a.addEventListener("focus",function(){a.dispatchEvent(new Event("mouseenter"))});
+      a.addEventListener("blur",function(){v.pause()});
+      a.addEventListener("mouseenter",function(){if(!v.src){v.src=v.dataset.src;v.addEventListener("canplay",function(){v.classList.add("ready")},{once:true})}var p=v.play();if(p&&p.catch)p.catch(function(){})});
+      a.addEventListener("mouseleave",function(){v.pause()});
+    }
+    return a;
+  }
+  function render(){
+    grid.textContent="";var shown=0;
+    CASES.forEach(function(c){if(filt!=="all"&&c.lv!==filt)return;grid.appendChild(card(c));shown++});
+    if(!shown)grid.appendChild(el("p","empty","No desks at this level yet."));
+    observe(grid);
+  }
+  render();
+  document.querySelectorAll("#filters .chip").forEach(function(b){b.addEventListener("click",function(){
+    document.querySelectorAll("#filters .chip").forEach(function(x){x.setAttribute("aria-pressed",x===b)});filt=b.getAttribute("data-f");render();
+  })});
+
+  /* ---------- methods ---------- */
+  var mt=document.getElementById("methods");
+  METHODS.forEach(function(x,i){
+    var d=el("article","panel method glow rv"+(i%4?" d"+(i%4):""));
+    d.appendChild(el("span","tag",x.k==="Lab"?"Agent Lab":"Workflow Studio"));
+    d.appendChild(el("h3","",x.t));d.appendChild(el("p","",x.m));
+    var t=el("div","trap");t.appendChild(el("b","","PLANTED TRAP"));t.appendChild(document.createTextNode(x.trap));d.appendChild(t);
+    mt.appendChild(d);
+  });
+  observe(mt);
+
+  /* ---------- tabs ---------- */
+  var tabs=[].slice.call(document.querySelectorAll('[role=tab]'));
+  function sel(t){tabs.forEach(function(x){var on=x===t;x.setAttribute("aria-selected",on);x.tabIndex=on?0:-1;var p=document.getElementById(x.getAttribute("aria-controls"));p.hidden=!on;if(on)p.classList.add("in")})}
+  tabs.forEach(function(t,i){
+    t.addEventListener("click",function(){sel(t)});
+    t.addEventListener("keydown",function(e){var n=e.key==="ArrowRight"?tabs[(i+1)%tabs.length]:e.key==="ArrowLeft"?tabs[(i-1+tabs.length)%tabs.length]:e.key==="Home"?tabs[0]:e.key==="End"?tabs[tabs.length-1]:null;if(n){e.preventDefault();sel(n);n.focus()}});
+  });
+
+  /* ---------- copy ---------- */
+  var note=document.getElementById("copyNote");
+  document.getElementById("copyBtn").addEventListener("click",function(){
+    function fb(){var r=document.createRange();r.selectNodeContents(document.getElementById("addr"));var s=getSelection();s.removeAllRanges();s.addRange(r);note.textContent="Selected. Press Ctrl+C or ⌘C to copy."}
+    try{navigator.clipboard.writeText("abhishek.jha@spjimr.org").then(function(){note.textContent="Address copied."},fb)}catch(e){fb()}
+  });
+
+  /* ---------- detail route ---------- */
+  var home=document.getElementById("home"),detail=document.getElementById("detail"),lastScroll=0;
+  function ytFacade(c){
+    var w=document.getElementById("dVideo");w.textContent="";
+    var img=el("img");img.src="media/poster-"+c.n+".jpg";img.alt="";w.appendChild(img);
+    var b=el("button","play-over");b.setAttribute("aria-label","Play the introduction video for "+c.name);
+    b.innerHTML='<span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l13-7.5z"/></svg></span><small>Introduction video · plays from YouTube</small>';
+    b.addEventListener("click",function(){
+      var f=el("iframe");f.src="https://www.youtube-nocookie.com/embed/"+c.yt+"?autoplay=1&rel=0";f.title=c.name+" introduction video";
+      f.allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";f.allowFullscreen=true;w.textContent="";w.appendChild(f);
+    });
+    w.appendChild(b);
+  }
+  function showCase(n){
+    var c=CASES[n-1];
+    document.title=c.name+" · AI Decision Desk";
+    document.getElementById("dCrumb").textContent="Desk "+n;
+    document.getElementById("dKicker").textContent="Desk "+String(n).padStart(2,"0")+" · "+c.co+" · "+c.fn;
+    document.getElementById("dTitle").textContent=c.name;
+    document.getElementById("dTag").textContent=c.tag;
+    var ch=document.getElementById("dChips");ch.textContent="";
+    [c.lv,c.dur,c.rounds,"You play: "+c.role].forEach(function(x){ch.appendChild(el("span","",x))});
+    ytFacade(c);
+    var p=document.getElementById("dProblem");p.textContent="";c.p.forEach(function(x){p.appendChild(el("p","",x))});
+    var ag=document.getElementById("dAgents");ag.textContent="";
+    c.agents.forEach(function(x){var d=el("div","agent");d.appendChild(el("i","",x.replace(/[^A-Z]/g,"").slice(0,2)||"AI"));d.appendChild(document.createTextNode(x));ag.appendChild(d)});
+    var you=el("div","agent you");you.appendChild(el("i","","YOU"));you.appendChild(document.createTextNode(c.role));ag.appendChild(you);
+    var ls=document.getElementById("dLimits");ls.textContent="";
+    document.getElementById("dLimitsSec").hidden=!c.limits.length;
+    c.limits.forEach(function(l){var d=el("div","limit");d.appendChild(el("b","",l[0]));d.appendChild(el("span","",l[1]));ls.appendChild(d)});
+    var ln=document.getElementById("dLearn");ln.textContent="";c.learn.forEach(function(x){ln.appendChild(el("li","",x))});
+    document.getElementById("sTitle").textContent=c.name;
+    var fc=document.getElementById("sFacts");fc.textContent="";
+    [["Company",c.co],["Function",c.fn],["Level",c.lv],["Duration",c.dur],["Format",c.rounds],["Agents",String(c.agents.length)]].forEach(function(r){fc.appendChild(el("dt","",r[0]));fc.appendChild(el("dd","",r[1]))});
+    var pg=document.getElementById("dPager");pg.textContent="";
+    if(n>1){var a=el("a","","← Desk "+(n-1)+": "+CASES[n-2].name);a.href="#case-"+(n-1);pg.appendChild(a)}else pg.appendChild(el("span"));
+    if(n<CASES.length){var z=el("a","","Desk "+(n+1)+": "+CASES[n].name+" →");z.href="#case-"+(n+1);pg.appendChild(z)}
+  }
+  function route(){
+    var m=location.hash.match(/^#case-(\d+)$/);
+    if(m&&+m[1]>=1&&+m[1]<=CASES.length){
+      if(!home.hidden)lastScroll=window.scrollY;
+      home.hidden=true;detail.hidden=false;showCase(+m[1]);window.scrollTo({top:0,behavior:"instant"});
+      var hv=document.getElementById("heroVid");if(hv)hv.pause();
+    }else{
+      var wasDetail=!detail.hidden;
+      detail.hidden=true;home.hidden=false;document.title="AI Decision Desk";
+      var hv2=document.getElementById("heroVid");if(hv2&&!reduce){var pp=hv2.play();if(pp&&pp.catch)pp.catch(function(){})}
+      if(wasDetail){
+        var id=location.hash.slice(1),t=id&&document.getElementById(id);
+        document.querySelectorAll("#home .rv").forEach(function(x){x.classList.add("in")});
+        if(t)t.scrollIntoView({behavior:"instant",block:"start"});else window.scrollTo({top:lastScroll,behavior:"instant"});
+      }
+    }
+  }
+  window.addEventListener("hashchange",route);route();
+  if(reduce){var hv3=document.getElementById("heroVid");hv3.removeAttribute("autoplay");hv3.pause()}
+})();
+</script>
+</body>
+</html>
